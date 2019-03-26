@@ -1,15 +1,15 @@
 <template>
   <div class="Footer">
-    <label>
-      <span>Check all</span>
+    <label class="Footer-CheckAll">
       <input type="checkbox" :checked="checked" @change="handleChange"/>
+      <span>Check all</span>
     </label>
     <p>{{remainingTodos}} items left</p>
     <Button
       @onClick="clearCompleted"
       id="clear-completed"
       label="Clear completed"
-      v-if="showClearButton"
+      :disabled="!showClearButton"
     />
   </div>
 </template>
@@ -56,5 +56,9 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin-top: 2rem;
+
+    &-CheckAll {
+      vertical-align: center;
+    }
   }
 </style>

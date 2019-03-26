@@ -3,7 +3,6 @@
     <TodoItem
       :key="todo.id"
       :todo="todo"
-      @removeTodo="removeTodo"
       @editTodo="editTodo"
       @doneEdit="doneEdit"
       v-for="todo in todos"
@@ -11,6 +10,8 @@
   </div>
 </template>
 <script>
+import { EventBus } from '@/utils/eventBus';
+
 import TodoItem from './TodoItem';
 
 export default {
@@ -22,6 +23,12 @@ export default {
     return {
       beforeEditCache: '',
     };
+  },
+  created() {
+    EventBus.$on('removeTodo', this.removeTodo);
+  },
+  beforeDestroy() {
+    EventBus.$off('removeTodo', this.removeTodo);
   },
   methods: {
     editTodo(todo) {
@@ -53,7 +60,7 @@ export default {
 
 <style lang="scss">
 .TodosList {
-  height: 20rem;
-  overflow-y: scroll;
+  min-height: 10rem;
+  margin-top: 2rem;
 }
 </style>

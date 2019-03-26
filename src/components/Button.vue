@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="{ 'Button--active': active }"
+    :class="{ 'Button--active': active, 'Button--disabled': disabled }"
     :id="id"
     @click="handleClick"
     class="Button"
@@ -23,6 +23,11 @@ export default {
   },
   props: {
     active: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       required: false,
       default: false,
@@ -61,6 +66,16 @@ export default {
     &--active, &:hover {
       background: darkgrey;
       color: white;
+    }
+
+    &--disabled {
+      color: darkgrey;
+      cursor: default;
+
+      &:hover {
+        color: darkgrey;
+        background: white;
+      }
     }
   }
 </style>

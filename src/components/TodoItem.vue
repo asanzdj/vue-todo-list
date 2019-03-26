@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { EventBus } from '@/utils/eventBus';
+
 export default {
   name: 'TodoItem',
   data() {
@@ -36,15 +38,9 @@ export default {
       text: this.todo.text,
     };
   },
-  props: {
-    todo: {
-      type: Object,
-      required: true,
-    },
-  },
   methods: {
     removeTodo() {
-      this.$emit('removeTodo', this.id);
+      EventBus.$emit('removeTodo', this.id);
     },
     editTodo() {
       this.$emit('editTodo', this.todo);
@@ -54,6 +50,12 @@ export default {
     },
     cancelEdit() {
       this.$emit('cancelEdit', this.todo);
+    },
+  },
+  props: {
+    todo: {
+      type: Object,
+      required: true,
     },
   },
 };
@@ -66,10 +68,6 @@ export default {
     justify-content: space-between;
     font-size: 1.4rem;
     margin: 1rem 0;
-
-    &:first-child {
-      margin-top: 2rem;
-    }
 
     &--left {
       align-items: center;
