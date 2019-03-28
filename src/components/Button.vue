@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$emit('onClick', this.id);
+      this.$emit('onClick');
     },
   },
   props: {

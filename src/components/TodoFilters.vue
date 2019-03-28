@@ -1,20 +1,19 @@
 <template>
   <div class="TodoFilters">
     <Button
+      v-for="filter in filters"
       :color="filter.color"
       :id="filter.id"
       :key="filter.id"
       :label="filter.label"
-      :value="filter.id"
-      v-for="filter in filters"
-      :active="active === filter.value"
-      @onClick="setFilter"
+      :active="activeFilter === filter.id"
+      @onClick="handleClick(filter.id)"
     />
   </div>
 </template>
 
 <script>
-import { validateFilter } from '@/utils/validators';
+import { mapState, mapActions } from 'vuex';
 
 import Button from './Button';
 
@@ -23,46 +22,20 @@ export default {
   components: {
     Button,
   },
-  data() {
-    return {
-      filters: [
-        {
-          id: 'ALL',
-          label: 'All',
-          value: 'ALL',
-          color: 'grey',
-        },
-        {
-          id: 'ACTIVE',
-          label: 'Active',
-          value: 'ACTIVE',
-          color: 'grey',
-        },
-        {
-          id: 'COMPLETED',
-          label: 'Completed',
-          value: 'COMPLETED',
-          color: 'grey',
-        },
-      ],
-    };
+  computed: {
+    ...mapState({
+      activeFilter: state => state.todos.filter,
+      filters: state => state.todos.filters,
+    }),
   },
   methods: {
-    setFilter(value) {
-      this.$emit('setFilter', value);
-    },
-  },
-  props: {
-    active: {
-      default: 'ALL',
-      required: false,
-      type: String,
-      validator: item => validateFilter(item),
+    ...mapActions('todos', [
+      'updateFilter',
+    ]),
+    handleClick(id) {
+      this.updateFilter({ newFilter: id });
     },
   },
 };
 </script>
 
-<style lang="scss">
-.TodoFilters {}
-</style>

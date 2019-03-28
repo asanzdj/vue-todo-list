@@ -1,16 +1,16 @@
 <template>
   <div class="TodosList">
     <TodoItem
+      v-for="todo in todos"
       :key="todo.id"
       :todo="todo"
       @editTodo="editTodo"
       @doneEdit="doneEdit"
-      v-for="todo in todos"
     />
   </div>
 </template>
 <script>
-import { EventBus } from '@/utils/eventBus';
+import { mapGetters } from 'vuex';
 
 import TodoItem from './TodoItem';
 
@@ -24,11 +24,10 @@ export default {
       beforeEditCache: '',
     };
   },
-  created() {
-    EventBus.$on('removeTodo', this.removeTodo);
-  },
-  beforeDestroy() {
-    EventBus.$off('removeTodo', this.removeTodo);
+  computed: {
+    ...mapGetters('todos', {
+      todos: 'filteredTodos',
+    }),
   },
   methods: {
     editTodo(todo) {
@@ -47,12 +46,6 @@ export default {
     cancelEdit(todo) {
       const newTodos = this.todos.map(item => (item.id === todo.id ? { ...item, editing: false, text: this.beforeEditCache } : item));
       this.$emit('setTodos', newTodos);
-    },
-  },
-  props: {
-    todos: {
-      type: Array,
-      required: true,
     },
   },
 };
